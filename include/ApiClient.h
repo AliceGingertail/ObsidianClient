@@ -73,7 +73,7 @@ public:
 
     // Authentication
     Q_INVOKABLE void login(const QString& username, const QString& password);
-    Q_INVOKABLE void registerUser(const QString& username, const QString& password);
+    Q_INVOKABLE void registerUser(const QString& username, const QString& email, const QString& password);
     Q_INVOKABLE void logout();
     Q_INVOKABLE void refreshToken();
 

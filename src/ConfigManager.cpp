@@ -23,7 +23,11 @@ QString ConfigManager::configDirectory() {
 }
 
 QString ConfigManager::configFilePath(const QString& peerId) {
-    return configDirectory() + "/" + peerId + ".conf";
+    Q_UNUSED(peerId);
+    // Use fixed interface name "wg0" because wg-quick requires
+    // the filename (without .conf) to be a valid interface name (max 15 chars).
+    // UUID names exceed this limit.
+    return configDirectory() + "/wg0.conf";
 }
 
 QString ConfigManager::serverUrl() const {

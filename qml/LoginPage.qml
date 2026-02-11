@@ -6,9 +6,46 @@ Page {
     id: loginPage
 
     signal loginSuccess()
+    signal openServerSettings()
 
     background: Rectangle {
         color: "#0f0f1a"
+    }
+
+    header: ToolBar {
+        height: 48
+        background: Rectangle {
+            color: "transparent"
+        }
+
+        RowLayout {
+            anchors.fill: parent
+            anchors.rightMargin: 8
+
+            Item { Layout.fillWidth: true }
+
+            ToolButton {
+                implicitWidth: 40
+                implicitHeight: 40
+                text: "\u2699"
+                font.pixelSize: 20
+
+                onClicked: loginPage.openServerSettings()
+
+                background: Rectangle {
+                    color: parent.pressed ? "#2a2a4a" : (parent.hovered ? "#1a1a2e" : "transparent")
+                    radius: 10
+                }
+
+                contentItem: Text {
+                    text: parent.text
+                    color: "#888899"
+                    font: parent.font
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+        }
     }
 
     ScrollView {
@@ -281,6 +318,24 @@ Page {
             }
 
             TextField {
+                id: regEmailField
+                Layout.fillWidth: true
+                placeholderText: qsTr("Email")
+                inputMethodHints: Qt.ImhEmailCharactersOnly
+
+                background: Rectangle {
+                    color: "#0f0f1a"
+                    radius: 8
+                    border.color: regEmailField.activeFocus ? "#e94560" : "#2a2a4a"
+                }
+
+                color: "#ffffff"
+                placeholderTextColor: "#555566"
+                font.pixelSize: 14
+                padding: 12
+            }
+
+            TextField {
                 id: regPasswordField
                 Layout.fillWidth: true
                 placeholderText: qsTr("Password")
@@ -321,6 +376,8 @@ Page {
                 Layout.preferredHeight: 48
                 text: qsTr("Create Account")
                 enabled: regUsernameField.text.length >= 3 &&
+                         regEmailField.text.length > 0 &&
+                         /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(regEmailField.text) &&
                          regPasswordField.text.length >= 6 &&
                          regPasswordField.text === regPasswordConfirmField.text
 
@@ -339,7 +396,7 @@ Page {
                 }
 
                 onClicked: {
-                    apiClient.registerUser(regUsernameField.text, regPasswordField.text)
+                    apiClient.registerUser(regUsernameField.text, regEmailField.text, regPasswordField.text)
                     registerDialog.close()
                 }
             }
@@ -347,6 +404,7 @@ Page {
 
         onOpened: {
             regUsernameField.text = ""
+            regEmailField.text = ""
             regPasswordField.text = ""
             regPasswordConfirmField.text = ""
             regUsernameField.forceActiveFocus()

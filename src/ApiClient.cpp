@@ -153,9 +153,10 @@ void ApiClient::login(const QString& username, const QString& password) {
     );
 }
 
-void ApiClient::registerUser(const QString& username, const QString& password) {
+void ApiClient::registerUser(const QString& username, const QString& email, const QString& password) {
     QJsonObject body;
     body["username"] = username;
+    body["email"] = email;
     body["password"] = password;
 
     sendRequest("/api/auth/register", "POST", body,

@@ -20,7 +20,7 @@ ApplicationWindow {
     StackView {
         id: stackView
         anchors.fill: parent
-        initialItem: apiClient.isAuthenticated ? mainPage : loginPage
+        initialItem: loginPage//apiClient.isAuthenticated ? mainPage : serverPage
 
         pushEnter: Transition {
             PropertyAnimation { property: "opacity"; from: 0; to: 1; duration: 200 }
@@ -39,10 +39,22 @@ ApplicationWindow {
     }
 
     Component {
+        id: serverPage
+        ServerPage {
+            onContinueToLogin: {
+                stackView.push(loginPage)
+            }
+        }
+    }
+
+    Component {
         id: loginPage
         LoginPage {
             onLoginSuccess: {
-                stackView.replace(mainPage)
+                stackView.replace(null, mainPage)
+            }
+            onOpenServerSettings: {
+                stackView.pop()
             }
         }
     }
@@ -52,7 +64,7 @@ ApplicationWindow {
         MainPage {
             onLogout: {
                 apiClient.logout()
-                stackView.replace(loginPage)
+                stackView.replace(null, serverPage)
             }
             onOpenSettings: {
                 stackView.push(settingsPage)

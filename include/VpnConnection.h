@@ -56,10 +56,12 @@ private:
     void setState(ConnectionState state);
     void setError(const QString& error);
     bool checkWireGuardAvailable() const;
+    bool hasNetworkManager() const;
 
     ConnectionState m_state = ConnectionState::Disconnected;
     QString m_currentPeerId;
     QString m_currentConfigPath;
+    QString m_nmConnectionName;
     QString m_errorMessage;
     std::unique_ptr<QProcess> m_process;
 };

@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/qml">
         <file alias="main.qml">main.qml</file>
+        <file alias="ServerPage.qml">ServerPage.qml</file>
         <file alias="LoginPage.qml">LoginPage.qml</file>
         <file alias="MainPage.qml">MainPage.qml</file>
         <file alias="ConnectionView.qml">ConnectionView.qml</file>
